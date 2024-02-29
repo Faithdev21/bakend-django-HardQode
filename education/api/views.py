@@ -1,16 +1,15 @@
 from django.utils import timezone
-from django.db.models import Count
-from rest_framework import viewsets, status
-from rest_framework.exceptions import ValidationError
-from rest_framework.generics import get_object_or_404
-from rest_framework.permissions import IsAuthenticated, AllowAny
-from rest_framework.response import Response
+from rest_framework import status, viewsets
 from rest_framework.decorators import action
+from rest_framework.generics import get_object_or_404
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.response import Response
 
 from api.permissions import HasAccessToProduct
-from products.models import Access, Product, Lesson, User, Group
-from products.views import distribute_users_to_groups
-from api.serializers import AccessSerializer, ProductSerializer, LessonSerializer
+from api.serializers import (AccessSerializer, LessonSerializer,
+                             ProductSerializer)
+from products.models import Access, Lesson, Product, User
+from products.signals import access_granted
 
 
 class ProductViewSet(viewsets.ReadOnlyModelViewSet):
@@ -33,22 +32,16 @@ class LessonViewSet(viewsets.ModelViewSet):
 
 class AccessViewSet(viewsets.ViewSet):
     @action(detail=True, methods=['post'])
-    def grant_access(self, request, pk=None):
+    def grant_access(self, request, pk=None) -> Response:
         product = get_object_or_404(Product, pk=pk)
         user_id = request.data.get('user_id')
         user = get_object_or_404(User, pk=user_id)
 
-        access, created = Access.objects.get_or_create(product=product, user=user)
+        access, created = Access.objects.get_or_create(
+            product=product,
+            user=user
+        )
         serializer = AccessSerializer(access)
 
-        try:
-            group = product.groups.annotate(num_students=Count('students')).filter(
-                num_students__lt=product.max_group_users).first()
-            group.students.add(user)
-        except Group.DoesNotExist:
-            raise ValidationError("Все группы заполнены.")
-
-        if product.start_date > timezone.now():
-            distribute_users_to_groups(product)
-
+        access_granted.send(sender=self.__class__, product=product)
         return Response(serializer.data, status=status.HTTP_201_CREATED)

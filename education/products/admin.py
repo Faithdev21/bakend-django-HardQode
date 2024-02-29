@@ -2,7 +2,7 @@ from typing import Tuple
 
 from django.contrib import admin
 
-from products.models import Product, Group, Lesson, Access
+from products.models import Access, Group, Lesson, Product
 
 
 @admin.register(Product)
