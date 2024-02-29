@@ -1,0 +1,22 @@
+[tool.poetry]
+name = "bakend-django-hardqode"
+version = "0.1.0"
+description = ""
+authors = ["Егор Лоскутов <egorkaloskutov@yandex.ru>"]
+readme = "README.md"
+packages = [{include = "bakend_django_hardqode"}]
+
+[tool.poetry.dependencies]
+python = "^3.9"
+Django = "4.2.2"
+djangorestframework = "^3.14.0"
+
+[tool.poetry.group.dev.dependencies]
+flake8 = "^7.0.0"
+black = "^23.12.1"
+isort = "^5.13.2"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
