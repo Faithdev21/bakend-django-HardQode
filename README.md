@@ -30,14 +30,14 @@ SECRET_KEY=django-insecure-r7=j=j2^+d-vx(rm%0wpa7b!r5t#wb#yeffoq2#co*^2(pg2oy
 DEBUG=True
 ```
 
-Установите poetry:  
+Установите poetry и нужные библиотеки:  
 1. ```pip install poetry```  
 2. ```poetry install```
 
-Выполнить миграции:
+Выполните миграции:
 ```python manage.py migrate```
 
-Запустить проект:
+Запустите проект:
 ```python3 manage.py runserver```
 
 ### Тестирование API
@@ -50,13 +50,13 @@ DEBUG=True
 
 `http://127.0.0.1/api/products/`  
 
-GET - Получение всех доустпных для покупки продуктов.
+GET - Получение всех доступных для покупки продуктов.
 
 ---
 
 `http://127.0.0.1/api/products/<products_pk>/lessons`
 
-GET - Получение всех уроков продукта, к которым пользователь имеет доступ.
+GET - Получение всех уроков продукта к которым пользователь имеет доступ.
 
 ---
 
