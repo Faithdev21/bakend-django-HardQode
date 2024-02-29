@@ -23,7 +23,7 @@ Python 3.9, Django 4.2.2, DRF 3.14, SQLite
 
 ```git clone https://github.com/Faithdev21/bakend-django-HardQode.git```
 
-Добавьте файл с названием .env в education/ (туда же, где .env.example) и заполните его:
+**!!!Добавьте файл с названием .env в education/ (туда же, где .env.example) и заполните его:!!!**
 
 ```
 SECRET_KEY=django-insecure-r7=j=j2^+d-vx(rm%0wpa7b!r5t#wb#yeffoq2#co*^2(pg2oy
